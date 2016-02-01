@@ -3,7 +3,11 @@
 import sys
 import re
 
-pat = sys.argv[1]
+
+tstr1 = "<html>Hello</html>"
+tstr2 = "<html>Hello World</html>"
+tstr3 = "<html><body> It's new </body></html>"
+
 
 for text in sys.argv[2:]:
 	if re.search(pat,text):

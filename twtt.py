@@ -5,8 +5,8 @@
 # Pre-processing, tokenizing, and tagging [25 marks]
 #		Created by Seyong Ha, 2016 Jan. 13
 #		Python version 2.7
-#  
-#		twtt.py program takes three args. the input .csv filename, ur group number, and the output filename. 
+#
+#		twtt.py program takes three args. the input .csv filename, ur group number, and the output filename.
 #
 ################
 
@@ -61,11 +61,11 @@ class Tweet(object):
 		self.query = data[3]
 		self.user = data[4]
 		self.text = data[5]
-	
+
 	def preprocess(self):
 		# remove all html tags and attributes
 		self.text
-		# replace html characer codes with ascii 
+		# replace html characer codes with ascii
 		# all urls are removed
 		# remove The first charcter in Twt user names and hashtages
 		# Each sentence within a tweet is on its own line
@@ -73,6 +73,7 @@ class Tweet(object):
 		# Each token, including punctuation and clitics is separated by spaces
 		# Each token is tagged with its part-of-speech
 		# Before each tweet is demarcation '<A=#>', which occurs on its own line, where # is the numeric class of the tweet (0,2, or 4)
+		
 
 	def desc(self):
 		print "Polar: %s" % str(self.polar)
