@@ -1,0 +1,35 @@
+
+
+=== Attribute Selection on all input data ===
+
+Search Method:
+	Attribute ranking.
+
+Attribute Evaluator (supervised, Class (nominal): 22 emotion):
+	Information Gain Ranking Filter
+
+Ranked attributes:
+ 0.018     5 past_tense_verbs
+ 0.0119    1 1st_person_pro
+ 0.0101   18 avg_len_of_sentences
+ 0         7 commas
+ 0        10 parentheses
+ 0         8 colons_and_semi_colons
+ 0         9 dashes
+ 0         3 3rd_person_pro
+ 0         2 2nd_person_pro
+ 0         6 future_tense_verbs
+ 0         4 coordinate_conjunctions
+ 0        17 words_all_in_upper
+ 0        16 modern_slang_acronyms
+ 0        21 num_of_emoti
+ 0        19 avg_len_of_tokens
+ 0        20 num_of_sentences
+ 0        12 common_nouns
+ 0        11 ellipses
+ 0        15 wh_words
+ 0        13 proper_nouns
+ 0        14 adverbs
+
+Selected attributes: 5,1,18,7,10,8,9,3,2,6,4,17,16,21,19,20,12,11,15,13,14 : 21
+
