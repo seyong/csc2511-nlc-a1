@@ -11,92 +11,102 @@
 ################
 
 import sys
-# Add tagger library path
+# Add tagger library path, but doesn't work well
 sys.path.append('./tagger')
 import csv
 import NLPlib
+from twitter import Tweet
+import re
 
 # command line arguments passed through 'sys.argv' as a list
-# check the number of arguments
+# check the number of argument
 
 def main(args):
-	if(len(args) < 4):
+	# For class 0, use lines [GID x 5500 ... (GID+1) x 5500 -1 ]
+	# For class 4, use liens 800,000 + [GID x 5500 ... (GID+1) x 5500 -1]
+	# my group_id = 100
+	LINES_BTW_CLASS = 800000
+	c0start = -1
+	c0end = -1
+	c4start = -1
+	c4end = -1
+	is_group_exist = False
+	print len(args)
+	## arguments checking
+	if(len(args) == 4):
+		input_filename = args[1]
+		output_filename = args[3]
+		try:
+			group_id = int(args[2])
+			c0start = (group_id * 5500)
+			c0end = ((group_id+1) * 5500)-1
+			c4start = LINES_BTW_CLASS + c0start
+			c4end = LINES_BTW_CLASS + c0end
+			is_group_exist = True
+		except ValueError:
+			print "Parameter (%s) is not a numeric" % args[2]
+	elif(len(args) == 3):
+		# variables must be a stirngs. input and output
+		input_filename = args[1]
+		output_filename = args[2]
+		group_id = -1
+	else:
 		print "Wrong number of arguments"
 		print "Usage: python twtt.py <input_filename> <group_number> <output_filename>"
 		sys.exit()
 
-	input_filename = args[1]
-	gr_number = args[2]
-	output_filename = args[3]
 
 	print 'Number of arguments:', len(args), 'arguments.'
 	print 'Input csv filename: ', input_filename, len(input_filename)
-	print 'Group Number: ', gr_number
+	if(group_id != -1):
+		print 'Group ID: ', group_id
 	print 'Output filename: ', output_filename
 
 ####
-# Read CSV file
+# Read CSV file and Write the preprocessing results
 ####
-	with open(input_filename,'r') as f:
+	tagger = NLPlib.NLPlib() # init tagger
+	wfp = open(output_filename,"w") # file pointer for writing result into outputfile
+	count = 0
+	with open(input_filename,'r+') as f:
 		reader = csv.reader(f)
-		try:
-			for row in reader:
-				tweet = Tweet(row)
-				#print row
-				tweet.desc()
-		except csv.Error as e:
-			sys.exit(" file %s, line %d: %s" % (input_filename, reader.line_num,e))
-
-####
-# Pre-processing
-####
-
-class Tweet(object):
-	#
-	#def __init__(self,polar,tid,date,query,user,text):
-	def __init__(self,data):
-		self.polar = data[0]
-		self.tid = data[1]
-		self.date = data[2]
-		self.query = data[3]
-		self.user = data[4]
-		self.text = data[5]
-
-	def preprocess(self):
-		# remove all html tags and attributes
-		self.text
-		# replace html characer codes with ascii
-		# all urls are removed
-		# remove The first charcter in Twt user names and hashtages
-		# Each sentence within a tweet is on its own line
-		# Ellipsis (i.e. '...') and other kinds of multiple punctuations are not split
-		# Each token, including punctuation and clitics is separated by spaces
-		# Each token is tagged with its part-of-speech
-		# Before each tweet is demarcation '<A=#>', which occurs on its own line, where # is the numeric class of the tweet (0,2, or 4)
-		
-
-	def desc(self):
-		print "Polar: %s" % str(self.polar)
-		print "Tweet id: %s" % str(self.tid)
-		print "Date: %s" % str(self.date)
-		print "Query: %s" % str(self.query)
-		print "User: %s" % str(self.user)
-		print "Text: %s" % str(self.text)
+		if(group_id != -1): #group id is provided
+			try:
+				for i,row in enumerate(reader):
+					if(i >= c0start and i<=c0end):
+						count = count +1
+						tweet = Tweet(row)
+						tweet.do_preprocess()
+						tweet.tagging(tagger) 
+						result =  tweet.printable_tweet()
+						print result
+						wfp.write(result+"\n")
+					elif(i >= c4start and i<=c4end):
+						count = count + 1
+						tweet = Tweet(row)
+						tweet.do_preprocess()
+						tweet.tagging(tagger) 
+						result =  tweet.printable_tweet()
+						print result
+						wfp.write(result+"\n")
 
 
-####
-# Tokenizing
-####
+			except csv.Error as e:
+				sys.exit(" file %s, line %d: %s" % (input_filename, reader.line_num,e))
+		else: # group _id is not provided, use all data
+			try:
+				for i,row in enumerate(reader):
+					tweet = Tweet(row)
+					tweet.do_preprocess()
+					tweet.tagging(tagger) 
+					result =  tweet.printable_tweet()
+					print result
+					wfp.write(result+"\n")
+			except csv.Error as e:
+				sys.exit(" file %s, line %d: %s" % (input_filename, reader.line_num,e))
+	print "Count is %s" % count	
+	wfp.close()
 
-
-####
-# Tagging
-####
-
-#Tagger example
-# tagger = NLPlib.NLPlib()
-# sent = ['tag','me']
-# tags = tagger.tag(sent)
 
 if __name__ == '__main__':
 	main(sys.argv)
