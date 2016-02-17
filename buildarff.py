@@ -79,7 +79,7 @@ def main(args):
 					tweet.set_polar(polar)	
 				else: #save previous tweet
 					#save previous
-					print tweet.get_polar()
+					#print tweet.get_polar()
 					if(count_list[tweet.get_polar()] >= num_read):
 						tweet = TweetText()
 						tweet.set_polar(polar)	
@@ -122,7 +122,7 @@ def init_arff_format(fp):
 	fp.write("@attribute avg_len_of_tokens numeric\n")
 	fp.write("@attribute num_of_sentences numeric\n")
 	fp.write("@attribute num_of_emoti numeric\n")
-	fp.write("@attribute emotion numeric\n")
+	fp.write("@attribute emotion {0,4}\n")
 	fp.write("\n")
 	fp.write("@data\n")
 

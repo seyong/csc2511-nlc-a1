@@ -31,7 +31,7 @@ def main(args):
 	c4start = -1
 	c4end = -1
 	is_group_exist = False
-	print len(args)
+	#print len(args)
 	## arguments checking
 	if(len(args) == 4):
 		input_filename = args[1]
@@ -79,7 +79,7 @@ def main(args):
 						tweet.do_preprocess()
 						tweet.tagging(tagger) 
 						result =  tweet.printable_tweet()
-						print result
+						#print result
 						wfp.write(result+"\n")
 					elif(i >= c4start and i<=c4end):
 						count = count + 1
@@ -87,7 +87,7 @@ def main(args):
 						tweet.do_preprocess()
 						tweet.tagging(tagger) 
 						result =  tweet.printable_tweet()
-						print result
+						#print result
 						wfp.write(result+"\n")
 
 
@@ -100,7 +100,7 @@ def main(args):
 					tweet.do_preprocess()
 					tweet.tagging(tagger) 
 					result =  tweet.printable_tweet()
-					print result
+					#print result
 					wfp.write(result+"\n")
 			except csv.Error as e:
 				sys.exit(" file %s, line %d: %s" % (input_filename, reader.line_num,e))
